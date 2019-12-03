@@ -33,6 +33,9 @@
   },
   "proxy": "http://localhost:3003",
   "devDependencies": {
-    "eslint-plugin-jest": "^23.0.5"
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "eslint-plugin-jest": "^23.0.5",
+    "eslint-plugin-react-hooks": "^2.3.0"
   }
 }

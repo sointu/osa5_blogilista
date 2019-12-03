@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import React, { useState, useEffect } from 'react'
 import loginService from './services/login'
 import Blog from './components/Blog'
@@ -79,14 +80,15 @@ function App(props) {
 
   const addBlog = (event) => {
     event.preventDefault()
-    console.log(user)
+
     const blogObject = {
       title: newTitle,
       author: newAuthor,
       url: newUrl,
-      likes: 0
-      //user: user.user._id
+      likes: 0,
+      user: user._id
     }
+
 
     blogService
       .create(blogObject)
@@ -96,7 +98,7 @@ function App(props) {
         setNewTitle('')
         setNewAuthor('')
         setNewUrl('')
-        setUser(user)
+        //alert(user.name)
         setTimeout(() => {
           setSuccessMessage(null)
         }, 5000)
@@ -119,14 +121,14 @@ function App(props) {
       author: blog.author,
       url: blog.url,
       likes: blog.likes+1,
-      user: blog.user
+      user: blog.user._id
     }
 
     blogService
       .update(id, blogObject)
       .then(returnedBlogs => {
         setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlogs))
-        setUser(user)
+        //alert(user.name)
       })
 
       .catch(error => {
@@ -151,7 +153,7 @@ function App(props) {
         setTimeout(() => {
           setSuccessMessage(null)
         }, 5000)
-        setUser(user)
+        // setUser(user)
       })
 
       .catch(error => {
@@ -237,22 +239,23 @@ function App(props) {
         loginForm() :
 
         <div>
-          <p>{user.name} is logged in
+          <p className="userLogged">{user.name} is logged in
             <button type="submit" onClick={handleLogOut}>logout</button>
           </p>
 
           <h2>Blogs</h2>
+          <div className="blogItems">
+            {blogs.map(blog =>
+              <>
+                <Blog
+                  key={blog.id} blog={blog} user={user.name} handleVisible={props.toggleVisibility}
+                  updateLikes={(e) => {e.stopPropagation(); updateLikes(blog.id)}}
+                  deleteBlog={(e) => {e.stopPropagation(); deleteBlog(blog.id)}}
+                />
 
-          {blogs.map(blog =>
-
-            <Blog
-              key={blog.id} blog={blog} user={user} handleVisible={props.toggleVisibility}
-              updateLikes={(e) => {e.stopPropagation(); updateLikes(blog.id)}}
-              deleteBlog={(e) => {e.stopPropagation(); deleteBlog(blog.id)}}
-
-            />
-
-          )}
+              </>
+            )}
+          </div>
 
           {blogForm()}
 

@@ -6,6 +6,7 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
   const [blogVisible, setBlogVisible] = useState(false)
   const [divNotVisible, setDivNotVisible] = useState(false)
 
+
   const toggleVisibility = () => {
     setBlogVisible(!blogVisible)
   }
@@ -23,6 +24,7 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
   }
 
   if (blogVisible === true) {
+
     return (
 
 
@@ -31,10 +33,10 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
         {blog.title} {blog.author} <br />
         {blog.url} <br />
         {blog.likes}
-        <div>
-          <button type="submit" onClick={updateLikes}> like </button><br />
-        </div>
-              Added by {blog.user.name} <br />
+
+        <button type="submit" onClick={updateLikes}> like </button><br />
+
+        <p>Added by {blog.user.name}</p>
         <button type="submit" onClick={deleteBlog}> Delete blog </button><br />
 
       </div>
