@@ -43,9 +43,9 @@ BlogForm.propTypes = {
   handleTitleChange: PropTypes.func.isRequired,
   handleAuthorChange: PropTypes.func.isRequired,
   handleUrlChange: PropTypes.func.isRequired,
-  newTitle: PropTypes.string.isRequired,
-  newAuthor: PropTypes.string.isRequired,
-  newUrl: PropTypes.string.isRequired
+  newTitle: PropTypes.string,
+  newAuthor: PropTypes.string,
+  newUrl: PropTypes.string
 }
 
 export default BlogForm

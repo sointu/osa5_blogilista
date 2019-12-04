@@ -1,5 +1,7 @@
 /* eslint-disable linebreak-style */
 import React, { useState, useEffect } from 'react'
+import  { useField } from './hooks'
+import  { useReset } from './hooks'
 import loginService from './services/login'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
@@ -10,14 +12,22 @@ import Success from './components/Success'
 import BlogForm from './components/BlogForm'
 
 
+
 function App(props) {
   const [blogs, setBlogs] = useState([])
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+
+
+  let username = useField('text')
+  let password = useField('text')
+
+  //const [username, setUsername] = useState('')
+  //const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+
+  const reset = useReset('text')
 
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
@@ -27,7 +37,12 @@ function App(props) {
 
   const handleLogin = async event => {
     event.preventDefault()
+    //alert(username.value)
     try {
+      // muutettu hookia käyttävän lomakkeen mukaan: value erilleen:
+      username = username.value
+      password = password.value
+
       const user = await loginService.login({
         username, password
       })
@@ -37,10 +52,11 @@ function App(props) {
       blogService.setToken(user.token)
       setUser(user)
       console.log(user)
-      setUsername('')
-      setPassword('')
+      //reset()
+      //setUsername('')
+      //setPassword('')
     } catch (error) {
-      setErrorMessage('ERROR: wrong username or password')
+      setErrorMessage(errorMessage+' ERROR: wrong username or password')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -164,37 +180,49 @@ function App(props) {
       })
 
   }
-
-
-
-  const loginForm = () => (
-
-    <div>
-      <h2>Log in to application</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          username
+  /*
           <input
             type="text"
             value={username}
             onChange={({ target }) => { setUsername(target.value) }}
             name="username"
           />
-        </div>
-        <div>
-          password
           <input
             type="text"
             value={password}
             onChange={({ target }) => { setPassword(target.value) }}
             name="password"
           />
-        </div>
-        <button type="submit">submit</button>
-      </form>
-    </div>
+           <input
+          type={username.type}
+          value={username.value}
+          onChange={username.onChange}
+        />
+*/
 
-  )
+  const loginForm = () => {
+    // console.log(username)
+    return(
+      <div>
+        <h2>Log in to application</h2>
+        <form onSubmit={handleLogin} onClick={reset}>
+          <div>
+          username
+            <input
+              {...username}
+            />
+          </div>
+          <div>
+          password
+            <input
+              {...password}
+            />
+          </div>
+          <button type="submit" >submit</button>
+        </form>
+      </div>
+    )
+  }
 
   const blogForm = () => {
     // näkyvyyden muuttaminen sen mukaan onko blogFormVisible false vai true
@@ -246,14 +274,14 @@ function App(props) {
           <h2>Blogs</h2>
           <div className="blogItems">
             {blogs.map(blog =>
-              <>
-                <Blog
-                  key={blog.id} blog={blog} user={user.name} handleVisible={props.toggleVisibility}
-                  updateLikes={(e) => {e.stopPropagation(); updateLikes(blog.id)}}
-                  deleteBlog={(e) => {e.stopPropagation(); deleteBlog(blog.id)}}
-                />
 
-              </>
+              <Blog
+                key={blog.id} blog={blog} user={user.name} handleVisible={props.toggleVisibility}
+                updateLikes={(e) => {e.stopPropagation(); updateLikes(blog.id)}}
+                deleteBlog={(e) => {e.stopPropagation(); deleteBlog(blog.id)}}
+              />
+
+
             )}
           </div>
 

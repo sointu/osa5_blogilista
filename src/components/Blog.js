@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 const Blog = ({ blog, updateLikes, deleteBlog }) => {
 
   const [blogVisible, setBlogVisible] = useState(false)
-  const [divNotVisible, setDivNotVisible] = useState(false)
+  //const [divNotVisible, setDivNotVisible] = useState(false)
 
 
   const toggleVisibility = () => {
@@ -18,11 +18,11 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-
+  /*
   const hiddenStyle = {
     display: 'none'
   }
-
+*/
   if (blogVisible === true) {
 
     return (
